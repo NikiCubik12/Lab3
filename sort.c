@@ -27,7 +27,7 @@ void bubble_sort(Deck *deck)
     }
 }
 
-void piramide_sort(Deck *deck)
-{
-    
-}
+// void piramide_sort(Deck *deck)
+// {
+
+// }
