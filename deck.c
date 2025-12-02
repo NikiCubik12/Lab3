@@ -81,13 +81,40 @@ void remove_from_end(Deck *deck)
 
 void remove_from_head(Deck *deck)
 {
-    
+    setlocale(LC_ALL, "Rus");
+    Element *temporarily = deck->head_deck;
+    if (deck->size == 1)
+    {
+        deck->head_deck = NULL;
+        deck->end_deck = NULL;
+    }
+    else 
+    {
+        deck->head_deck = deck->head_deck->next;
+        deck->head_deck->pref = NULL;
+        int count = 0;
+        Element *temp = deck->head_deck;
+        while (temp != NULL)
+        {
+            temp->index = count;
+            count++;
+            temp = temp->next;
+        }
+    }
+    free(temporarily);
+    deck->size--;
 }
+
+
 
 void print_deck(Deck *deck)
 {
     setlocale(LC_ALL, "Rus");
-    Element *temporarily = deck->head_deck;
+    Element *temporarily = deck->head_deck; 
+    if (temporarily == NULL)
+    {
+        printf("Пустой список.\n");
+    }
     while (temporarily != NULL)
     {
         printf("%d:", temporarily->index);
