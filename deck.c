@@ -105,7 +105,64 @@ void remove_from_head(Deck *deck)
     deck->size--;
 }
 
+void add_by_index(int val, int idx, Deck *deck)
+{
+    setlocale(LC_ALL, "Rus");
+    if (deck->size - 1 == idx) // если idx = размеру deck, то добавляем элемент в конец
+    {
+        add_to_end(val, deck);
+        return;
+    }
+    Element *temporarily = deck->head_deck;
+    while (temporarily->index != idx)
+    {
+        temporarily = temporarily->next;
+    }
+    Element *new_elem = (Element*) malloc(sizeof(Element));
+    new_elem->index = idx;
+    new_elem->value = val;
+    new_elem->next = temporarily->next; // new смотрит на 3
+    temporarily->next = new_elem; // элемент по idx смотрит на следующий - new
+    temporarily->next->next->pref = new_elem; // 3 смотрит на new
+    new_elem->pref = temporarily; // new смотрит на второй
+    temporarily = temporarily->next;
+    while (temporarily != NULL)
+    {
+        temporarily->index++;
+        temporarily = temporarily->next;
+    }
+    deck->size++;
+}
 
+void remove_by_index(int idx, Deck *deck)
+{
+    setlocale(LC_ALL, "Rus");
+    if (idx == 0)
+    {
+        remove_from_head(deck);
+        return;
+    }
+    if (idx == deck->end_deck->index)
+    {
+        remove_from_end(deck);
+        return;
+    }
+    Element *temporarily = deck->head_deck;
+    while (temporarily->index != idx)
+    {
+        temporarily = temporarily->next;
+    }
+    temporarily->pref->next = temporarily->next;
+    temporarily->next->pref = temporarily->pref;
+    deck->size--;
+    temporarily = temporarily->next;
+    while (temporarily != NULL)
+    {
+        temporarily->index--;
+        temporarily = temporarily->next;
+    }
+    free(temporarily);
+}
 
 void print_deck(Deck *deck)
 {

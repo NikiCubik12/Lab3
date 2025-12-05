@@ -21,8 +21,8 @@ void add_to_end(int val, Deck *deck);
 void add_to_head(int val, Deck *deck);
 void remove_from_end(Deck *deck);
 void remove_from_head(Deck *deck);
-// void add_by_index(Deck *deck);
-// void remove_by_index(Deck *deck);
+void add_by_index(int val, int idx, Deck *deck);
+void remove_by_index(int idx, Deck *deck);
 void print_deck(Deck *deck);
 
 #endif

@@ -12,17 +12,12 @@ int main()
     add_to_end(3, deck1);
     add_to_end(2, deck1);
     add_to_end(1, deck1);
-    add_to_end(5, deck2);
+    add_to_end(5, deck1);
 
     print_deck(deck1);
     printf("\n");
     
-    remove_from_end(deck1);
+    add_by_index(6, 4, deck1);
     print_deck(deck1);
-    printf("\n");
-    remove_from_head(deck2);
-    print_deck(deck2);
-    add_to_end(3, deck2);
-    print_deck(deck2);
     return 0;
 }
