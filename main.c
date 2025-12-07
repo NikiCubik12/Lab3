@@ -7,17 +7,15 @@ int main()
 {
     setlocale(LC_ALL, "Rus");
     FILE *List;
-    int number, option, is_working = 1;
-    // Открываем файл для чтения ("r")
+    int number;
     List = fopen("Lists.txt", "r");
-    // Проверяем, успешно ли открылся файл
-    if (List == NULL) {
-        printf("Ошибка: не удалось открыть файл.\n");
-        return 1; // Возвращаем код ошибки
+    if (List == NULL) 
+    {
+        printf("РћС€РёР±РєР°. РќРµ СѓРґР°Р»РѕСЃСЊ РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р».\n");
+        return 1; 
     }
-    printf("Считываем числа из файла:\n");
-    // Читаем числа, пока не достигнут конец файла (EOF)
-    // fscanf возвращает количество успешно считанных элементов
+    printf("РЎС‡РёС‚С‹РІР°РµРј С‡РёСЃР»Р° РёР· С„Р°Р№Р»Р°:\n");
+
     Deck *deck = make();
     while (fscanf(List, "%d", &number) == 1) 
     {
@@ -25,25 +23,28 @@ int main()
     }
     print_deck(deck);
     printf("\n");
-    
+
     fclose(List);
+
+    int option, action, is_working = 1;
+    printf("Р”РµРє Р·Р°РіСЂСѓР¶РµРЅ РёР· С„Р°Р№Р»Р°. Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ РѕС‚ 1 РґРѕ 6:\n");
     
-    printf("Дек загружен из файла. Выберите действие от 1 до 6:\n");
-    printf("1. Добавление элемента в начало дека\n");
-    printf("2. Удаление элемента из начала дека\n");
-    printf("3. Добавление элемента в конец дека\n");
-    printf("4. Удаление элемента из конца дека\n");
-    printf("5. Добавление элемента по индексу\n");
-    printf("6. Удаление элемента по индексу\n");
     while (is_working == 1)
     {
+        
+        printf("1. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РЅР°С‡Р°Р»Рѕ РґРµРєР°\n");
+        printf("2. РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· РЅР°С‡Р°Р»Р° РґРµРєР°\n");
+        printf("3. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РєРѕРЅРµС† РґРµРєР°\n");
+        printf("4. РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· РєРѕРЅС†Р° РґРµРєР°\n");
+        printf("5. Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ\n");
+        printf("6. РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ\n");
         scanf("%d", &option);
         int input_number, input_index;
         
         switch (option)
         {
             case 1:
-                printf("Введите число:\n");
+                printf("Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ:\n");
                 scanf("%d", &input_number);
                 add_to_head(input_number, deck);
                 print_deck(deck);
@@ -55,7 +56,7 @@ int main()
                 printf("\n");
                 break;
             case 3:
-                printf("Введите число:\n");
+                printf("Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ:\n");
                 scanf("%d", &input_number);
                 add_to_end(input_number, deck);
                 print_deck(deck);
@@ -67,7 +68,7 @@ int main()
                 printf("\n");
                 break;
             case 5:
-                printf("Введите число и индекс через клавишу Энтер:\n");
+                printf("Р’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ Рё РёРЅРґРµРєСЃ С‡РµСЂРµР· РєР»Р°РІРёС€Сѓ Р­РЅС‚РµСЂ:\n");
                 scanf("%d", &input_number);
                 scanf("%d", &input_index);
                 add_by_index(input_number, input_index, deck);
@@ -75,7 +76,7 @@ int main()
                 printf("\n");
                 break;
             case 6:
-                printf("Введите индекс:\n");
+                printf("Р’РІРµРґРёС‚Рµ РёРЅРґРµРєСЃ:\n");
                 scanf("%d", &input_index);
                 remove_by_index(input_index, deck);
                 print_deck(deck);
@@ -83,17 +84,17 @@ int main()
                 break;
             
         }
-        printf("Отсортированный дек:\n");
+        printf("РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РґРµРє:\n");
         bubble_sort(deck);
         print_deck(deck);
         printf("\n");
-        printf("Хотите продолжить программу?\n");
+        printf("РҐРѕС‚РёС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ? 1 - РґР°, 0 - РЅРµС‚\n");
         scanf("%d", &is_working);
         if (is_working == 0)
         {
             break;
         }
     }
-    printf("Выход из программы...\n");
+    printf("Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹...\n");
     return 0;
 }
