@@ -7,7 +7,7 @@ void input_deck(Deck *deck)
 {
     int value;
     char str[200];
-    printf("Введите числа через пробел: ");
+    printf("Введите числа через пробел: \n");
     if (fgets(str, sizeof(str), stdin) != NULL)
     {
         char *pointer = str;
@@ -25,7 +25,7 @@ int main()
 {
     setlocale(LC_ALL, "Rus");
     int option, action, is_working = 1;
-    
+    int input_number, input_index;
     while (is_working == 1)
     {
         printf("Выберете метод работы с программой 1 или 2:\n");
@@ -60,7 +60,7 @@ int main()
                 printf("5. Добавление элемента по индексу\n");
                 printf("6. Удаление элемента по индексу\n");
                 scanf("%d", &option);
-                int input_number, input_index;
+                
                 
                 switch (option)
                 {
@@ -126,7 +126,6 @@ int main()
                 printf("5. Добавление элемента по индексу\n");
                 printf("6. Удаление элемента по индексу\n");
                 scanf("%d", &option);
-                int input_number, input_index;
                 
                 switch (option)
                 {
