@@ -8,6 +8,7 @@ void input_deck(Deck *deck)
     int value;
     char str[200];
     printf("¬ведите числа через пробел: \n");
+    int c; while ((c = getchar()) != '\n' && c != EOF);
     if (fgets(str, sizeof(str), stdin) != NULL)
     {
         char *pointer = str;
@@ -19,7 +20,6 @@ void input_deck(Deck *deck)
         }
     }
 }
-
 
 int main()
 {
