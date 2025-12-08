@@ -164,6 +164,23 @@ void remove_by_index(int idx, Deck *deck)
     free(temporarily);
 }
 
+Element *get_elem_by_index(int idx, Deck *deck)
+{
+    Element *temporarily = deck->head_deck;
+    while (temporarily != NULL && temporarily->index != idx)
+    {
+        temporarily = temporarily->next;
+    }
+    return temporarily;
+}
+
+void swap_elements(Element *elem1, Element *elem2)
+{
+    int x = elem1->value;
+    elem1->value = elem2->value;
+    elem2->value = x;
+}
+
 void print_deck(Deck *deck)
 {
     setlocale(LC_ALL, "Rus");

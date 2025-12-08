@@ -23,6 +23,8 @@ void remove_from_end(Deck *deck);
 void remove_from_head(Deck *deck);
 void add_by_index(int val, int idx, Deck *deck);
 void remove_by_index(int idx, Deck *deck);
+Element *get_elem_by_index(int idx, Deck *deck);
+void swap_elements(Element *elem1, Element *elem2);
 void print_deck(Deck *deck);
 
 #endif

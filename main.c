@@ -2,6 +2,7 @@
 #include "deck.h"
 #include "sort.h"
 #include "locale.h"
+#include <time.h>
 
 void input_deck(Deck *deck)
 {
@@ -28,7 +29,7 @@ int main()
     int input_number, input_index;
     while (is_working == 1)
     {
-        printf("Выберете метод работы с программой 1 или 2:\n");
+        printf("1234Выберете метод работы с программой 1 или 2:\n");
         scanf("%d", &action);
         switch (action)
         {
@@ -105,7 +106,7 @@ int main()
                         break;
                 }
                 printf("Отсортированный дек:\n");
-                bubble_sort(deck);
+                piramide_sort(deck);
                 print_deck(deck);
                 printf("\n");
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
@@ -170,8 +171,14 @@ int main()
                         break;
                     
                 }
-                printf("Отсортированный дек:\n");
+                printf("2Отсортированный дек:\n");
+                clock_t before, after;
+                double time;
+                before = clock();
                 bubble_sort(deck);
+                after = clock();
+                time = ((double) (after - before))/CLOCKS_PER_SEC;
+                printf("Время работы сотировки пузырьком: %f", time);
                 print_deck(deck);
                 printf("\n");
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
