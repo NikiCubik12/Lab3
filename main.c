@@ -3,6 +3,7 @@
 #include "sort.h"
 #include "locale.h"
 #include <time.h>
+#include <stdlib.h>
 
 void input_deck(Deck *deck)
 {
@@ -22,14 +23,27 @@ void input_deck(Deck *deck)
     }
 }
 
+void generating_of_elements(Deck *deck, int count_add)
+{
+    setlocale(LC_ALL, "Russian");
+    srand(time(NULL));
+    for (int i = 0; i < count_add; i++)         
+    {
+        int x = rand() %100000 + 1; 
+        add_to_end(x, deck);
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "Rus");
-    int option, action, is_working = 1;
+    int option, action, choice, is_working = 1;
     int input_number, input_index;
+    double time;
+    clock_t before, after;
     while (is_working == 1)
     {
-        printf("1234Выберете метод работы с программой 1 или 2:\n");
+        printf("Выберете метод работы с программой 1 или 2:\n");
         scanf("%d", &action);
         switch (action)
         {
@@ -50,8 +64,8 @@ int main()
                     add_to_end(number, deck);
                 }
                 print_deck(deck);
+                printf("Количество элементов в деке: %d", deck->size);
                 printf("\n");
-
                 fclose(List);
                 printf("Дек загружен из файла. Выберите действие от 1 до 6:\n");
                 printf("1. Добавление элемента в начало дека\n");
@@ -106,7 +120,11 @@ int main()
                         break;
                 }
                 printf("Отсортированный дек:\n");
-                piramide_sort(deck);
+                before = clock();
+                bubble_sort(deck);
+                after = clock();
+                time = ((double) (after - before))/CLOCKS_PER_SEC;
+                printf("Время работы сотировки пузырьком: %f", time);
                 print_deck(deck);
                 printf("\n");
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
@@ -115,11 +133,26 @@ int main()
                 {
                     break;
                 }
-                break;
+                break; 
         
             
             case 2:
-                input_deck(deck);
+                printf("Хотите сгенерировать или ввести числа? 1 - сгенерировать, 2 - ручной ввод\n");
+                scanf("%d", choice);
+                switch (choice)
+                {
+                    case 1:
+                        int count_add;
+                        printf("Введите количество сгенерируемых элементов:\n");
+                        scanf("%d", &count_add);
+                        generating_of_elements(deck, count_add);
+                        break;
+                    case 2:
+                        printf("Введите через пробел числа:\n");
+                        input_deck(deck);
+                        break;
+                }
+                print_deck(deck);
                 printf("1. Добавление элемента в начало дека\n");
                 printf("2. Удаление элемента из начала дека\n");
                 printf("3. Добавление элемента в конец дека\n");
@@ -169,11 +202,8 @@ int main()
                         print_deck(deck);
                         printf("\n");
                         break;
-                    
                 }
-                printf("2Отсортированный дек:\n");
-                clock_t before, after;
-                double time;
+                printf("Отсортированный дек:\n");
                 before = clock();
                 bubble_sort(deck);
                 after = clock();
