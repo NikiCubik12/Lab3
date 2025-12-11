@@ -5,24 +5,18 @@
 
 void bubble_sort(Deck *deck)
 {
-    while (1)
+    int temp;
+    
+    for (int i=0; i < deck->size-1; i++)
     {
-        Element *temporarily = deck->head_deck;
-        int flag = 0;
-        while (temporarily->next != NULL)
+        for (int j=i+1; j < deck->size; j++)
         {
-            if (temporarily->value > temporarily->next->value)
+            if (get_elem_by_index(i, deck)->value > get_elem_by_index(j, deck)->value)
             {
-                int tmp = temporarily->value;
-                temporarily->value = temporarily->next->value;
-                temporarily->next->value = tmp;
-                flag = 1;
+                temp = get_elem_by_index(i, deck)->value;
+                get_elem_by_index(i, deck)->value = get_elem_by_index(j, deck)->value;
+                get_elem_by_index(j, deck)->value = temp;
             }
-            temporarily = temporarily->next;
-        }
-        if (flag == 0)
-        {
-            break;
         }
     }
 }
@@ -35,16 +29,16 @@ void tree_rebuild(int r, int q, Deck *deck)
     i = r;
     v = get_elem_by_index(i, deck)->value;
     j = 2*i + 1;
-    while (j <= 1 && !pp)
+    while (j <= q && !pp)
     {
         if (j < q)
         {
-            if (get_elem_by_index(j, deck)->value > get_elem_by_index(j + 1, deck)->value)
+            if (get_elem_by_index(j, deck)->value < get_elem_by_index(j + 1, deck)->value)
             {
                 j++;
             }
         }
-        if (v <= get_elem_by_index(j, deck)->value)
+        if (v >= get_elem_by_index(j, deck)->value)
         {
             pp = 1;
         }

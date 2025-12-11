@@ -5,6 +5,21 @@
 #include <time.h>
 #include <stdlib.h>
 
+void print_file(Deck* deck)
+{
+    FILE* result = fopen("Result.txt", "w");
+    if (result == NULL)
+    {
+        printf ("Не удалось открыть файл для вывода! \n");
+        return;
+    }
+    
+    for (int i=0; i < deck->size; i++)
+    {
+        fprintf(result, "%d ", get_elem_by_index(i, deck)->value);
+    }
+}
+
 void input_deck(Deck *deck)
 {
     int value;
@@ -104,7 +119,7 @@ int main()
                         printf("\n");
                         break;
                     case 5:
-                        printf("Введите число и индекс через клавишу Энтер:\n");
+                        printf("Введите число и индекс через клавишу Ёнтер:\n");
                         scanf("%d", &input_number);
                         scanf("%d", &input_index);
                         add_by_index(input_number, input_index, deck);
@@ -119,14 +134,38 @@ int main()
                         printf("\n");
                         break;
                 }
-                printf("Отсортированный дек:\n");
-                before = clock();
-                bubble_sort(deck);
-                after = clock();
-                time = ((double) (after - before))/CLOCKS_PER_SEC;
-                printf("Время работы сотировки пузырьком: %f", time);
-                print_deck(deck);
-                printf("\n");
+                printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
+                scanf("%d", &option);
+                
+                switch (option)
+                {
+                    case 1:
+                            before = clock();
+                            bubble_sort(deck);
+                            after = clock();
+                            printf("Отсортированный дек:\n");
+                            //print_deck(deck);
+                            time = ((double) (after - before))/CLOCKS_PER_SEC;
+                            printf("Время работы сортировки пузырьком: %f\n", time);
+                            printf ("Количество элементов: %d \n", deck->size);
+                            print_file (deck);
+
+                            break;
+                    
+                    
+                    case 2:
+                            before = clock();
+                            piramide_sort(deck);
+                            after = clock();
+                            printf("Отсортированный дек:\n");
+                            time = ((double) (after - before))/CLOCKS_PER_SEC;
+                            //print_deck(deck);
+                            printf("Время работы пирамидальной сортировки: %f\n", time);
+                            printf ("Количество элементов: %d \n", deck->size);
+                            print_file (deck);
+                            break;
+                }
+
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
                 scanf("%d", &is_working);
                 if (is_working == 0)
@@ -138,13 +177,14 @@ int main()
             
             case 2:
                 printf("Хотите сгенерировать или ввести числа? 1 - сгенерировать, 2 - ручной ввод\n");
-                scanf("%d", choice);
+                scanf("%d", &choice);
                 switch (choice)
                 {
                     case 1:
                         int count_add;
                         printf("Введите количество сгенерируемых элементов:\n");
                         scanf("%d", &count_add);
+                        deck = make();
                         generating_of_elements(deck, count_add);
                         break;
                     case 2:
@@ -152,7 +192,6 @@ int main()
                         input_deck(deck);
                         break;
                 }
-                print_deck(deck);
                 printf("1. Добавление элемента в начало дека\n");
                 printf("2. Удаление элемента из начала дека\n");
                 printf("3. Добавление элемента в конец дека\n");
@@ -172,7 +211,7 @@ int main()
                         break;
                     case 2:
                         remove_from_head(deck);
-                        print_deck(deck);
+                        // print_deck(deck);
                         printf("\n");
                         break;
                     case 3:
@@ -203,14 +242,36 @@ int main()
                         printf("\n");
                         break;
                 }
-                printf("Отсортированный дек:\n");
-                before = clock();
-                bubble_sort(deck);
-                after = clock();
-                time = ((double) (after - before))/CLOCKS_PER_SEC;
-                printf("Время работы сотировки пузырьком: %f", time);
-                print_deck(deck);
-                printf("\n");
+                printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
+                scanf("%d", &option);
+                
+                switch (option)
+                {
+                    case 1:
+                            before = clock();
+                            bubble_sort(deck);
+                            after = clock();
+                            printf("Отсортированный дек:\n");
+                            //print_deck(deck);
+                            time = ((double) (after - before))/CLOCKS_PER_SEC;
+                            printf("Время работы сотировки пузырьком: %f\n", time);
+                            printf ("Количество элементов: %d \n", deck->size);
+                            print_file (deck);
+                            break;
+                    
+                    
+                    case 2:
+                            before = clock();
+                            piramide_sort(deck);
+                            after = clock();
+                            printf("Отсортированный дек:\n");
+                            //print_deck(deck);
+                            time = ((double) (after - before))/CLOCKS_PER_SEC;
+                            printf("Время работы пирамидальной сортировки: %f\n", time);
+                            printf ("Количество элементов: %d \n", deck->size);
+                            print_file (deck);
+                            break;
+                }
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
                 scanf("%d", &is_working);
                 if (is_working == 0)
