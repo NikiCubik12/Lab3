@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include "deck.h"
 #include "sort.h"
-#include "locale.h"
+#include <locale.h>
 #include <time.h>
 #include <stdlib.h>
+#define N INT_MAX
+#define n INT_MIN
 
 void print_file(Deck* deck)
 {
@@ -14,7 +16,7 @@ void print_file(Deck* deck)
         return;
     }
     
-    for (int i=0; i < deck->size; i++)
+    for (int i = 0; i < deck->size; i++)
     {
         fprintf(result, "%d ", get_elem_by_index(i, deck)->value);
     }
@@ -25,7 +27,8 @@ void input_deck(Deck *deck)
     int value;
     char str[200];
     printf("Введите числа через пробел: \n");
-    int c; while ((c = getchar()) != '\n' && c != EOF);
+    int c; 
+    while ((c = getchar()) != '\n' && c != EOF);
     if (fgets(str, sizeof(str), stdin) != NULL)
     {
         char *pointer = str;
@@ -49,6 +52,31 @@ void generating_of_elements(Deck *deck, int count_add)
     }
 }
 
+int input(int min, int max, char* message)
+{
+    int value;
+    char string[200];
+    while (1)
+    {
+        if (fgets(string, sizeof(string), stdin) == NULL)
+        {
+            continue;
+        }
+        char* pointer;
+        value = (int) strtol(string, &pointer, 10); 
+        if (*pointer != '\0' && *pointer != '\n') 
+        {
+            printf("%s", message);
+            continue;
+        }
+        if (min <= value && value <= max)
+        {
+            return value;
+        }
+        printf("%s", message);
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "Rus");
@@ -59,7 +87,7 @@ int main()
     while (is_working == 1)
     {
         printf("Выберете метод работы с программой 1 или 2:\n");
-        scanf("%d", &action);
+        action = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз:");
         switch (action)
         {
             case 1:
@@ -74,11 +102,12 @@ int main()
                 printf("Считываем числа из файла:\n");
 
                 Deck *deck = make();
-                while (fscanf(List, "%d", &number) == 1) 
+                while (fscanf(List, "%d", &number) == 1 && number >= n && number <= N) 
                 {
                     add_to_end(number, deck);
                 }
                 print_deck(deck);
+                printf("\n");
                 printf("Количество элементов в деке: %d", deck->size);
                 printf("\n");
                 fclose(List);
@@ -89,14 +118,15 @@ int main()
                 printf("4. Удаление элемента из конца дека\n");
                 printf("5. Добавление элемента по индексу\n");
                 printf("6. Удаление элемента по индексу\n");
-                scanf("%d", &option);
+                option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз:\n");
                 
                 
                 switch (option)
                 {
                     case 1:
-                        printf("Введите число:\n");
-                        scanf("%d", &input_number);
+                        printf("Введите число от -2147483648 до 2147483647:\n");
+                        input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз:");
+                        // scanf("%d", &input_number);
                         add_to_head(input_number, deck);
                         print_deck(deck);
                         printf("\n");
@@ -107,8 +137,8 @@ int main()
                         printf("\n");
                         break;
                     case 3:
-                        printf("Введите число:\n");
-                        scanf("%d", &input_number);
+                        printf("Введите число от -2147483648 до 2147483647:\n");
+                        input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                         add_to_end(input_number, deck);
                         print_deck(deck);
                         printf("\n");
@@ -119,23 +149,23 @@ int main()
                         printf("\n");
                         break;
                     case 5:
-                        printf("Введите число и индекс через клавишу Ёнтер:\n");
-                        scanf("%d", &input_number);
-                        scanf("%d", &input_index);
+                        printf("Введите число от -2147483648 до 2147483647 и индекс через клавишу Энтер:\n");
+                        input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз:");
+                        input_index = input(0, deck->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                         add_by_index(input_number, input_index, deck);
                         print_deck(deck);
                         printf("\n");
                         break;
                     case 6:
                         printf("Введите индекс:\n");
-                        scanf("%d", &input_index);
+                        input_index = input(0, deck->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                         remove_by_index(input_index, deck);
                         print_deck(deck);
                         printf("\n");
                         break;
                 }
                 printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
-                scanf("%d", &option);
+                option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                 
                 switch (option)
                 {
@@ -144,22 +174,19 @@ int main()
                             bubble_sort(deck);
                             after = clock();
                             printf("Отсортированный дек:\n");
-                            //print_deck(deck);
+                            print_deck(deck);
                             time = ((double) (after - before))/CLOCKS_PER_SEC;
                             printf("Время работы сортировки пузырьком: %f\n", time);
                             printf ("Количество элементов: %d \n", deck->size);
                             print_file (deck);
-
                             break;
-                    
-                    
                     case 2:
                             before = clock();
                             piramide_sort(deck);
                             after = clock();
                             printf("Отсортированный дек:\n");
                             time = ((double) (after - before))/CLOCKS_PER_SEC;
-                            //print_deck(deck);
+                            print_deck(deck);
                             printf("Время работы пирамидальной сортировки: %f\n", time);
                             printf ("Количество элементов: %d \n", deck->size);
                             print_file (deck);
@@ -167,17 +194,13 @@ int main()
                 }
 
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
-                scanf("%d", &is_working);
-                if (is_working == 0)
-                {
-                    break;
-                }
+                is_working = input(0, 1, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                 break; 
         
             
             case 2:
                 printf("Хотите сгенерировать или ввести числа? 1 - сгенерировать, 2 - ручной ввод\n");
-                scanf("%d", &choice);
+                choice = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                 switch (choice)
                 {
                     case 1:
@@ -198,7 +221,7 @@ int main()
                 printf("4. Удаление элемента из конца дека\n");
                 printf("5. Добавление элемента по индексу\n");
                 printf("6. Удаление элемента по индексу\n");
-                scanf("%d", &option);
+                option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                 
                 switch (option)
                 {
@@ -273,11 +296,7 @@ int main()
                             break;
                 }
                 printf("Хотите продолжить программу? 1 - да, 0 - нет\n");
-                scanf("%d", &is_working);
-                if (is_working == 0)
-                {
-                    break;
-                }
+                is_working = input(0, 1, "Ошибка. Введено некорректное значение. Введите ещё раз:");
                 break; 
         }
     }

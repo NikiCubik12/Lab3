@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "deck.h"
-#include "locale.h"
+#include <locale.h>
 
 Deck *make()
 {
