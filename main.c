@@ -62,7 +62,7 @@ void input_deck(Deck *deck)
             break;
         }
         str[strcspn(str, "\n")] = '\0'; // Пометили, что строка заканчивается
-        if (strcmp(str, "Стоп") == 0)
+        if (strcmp(str, "Stop") == 0)
         {
             break;
         }
@@ -97,6 +97,7 @@ int main()
     int option, action, choice, is_working = 1;
     int input_number, input_index;
     double time;
+    Deck *deck = make();
     clock_t before, after;
     while (is_working == 1)
     {
@@ -116,7 +117,6 @@ int main()
                 }
                 printf("Считываем числа из файла:\n");
 
-                Deck *deck = make();
                 while (fscanf(List, "%199s", buffer) == 1) 
                 {
                     errno = 0;
@@ -229,17 +229,20 @@ int main()
                 switch (choice)
                 {
                     case 1:
+                    {
                         int count_add;
                         printf("Введите количество сгенерируемых элементов:\n");
                         count_add = input(1, N, "Ошибка. Введено некорректное значение. Введите ещё раз:\n");
-                        Deck *deck = make();
                         generating_of_elements(deck, count_add);
                         break;
+                    }
                     case 2:
+                    {
                         input_deck(deck);
                         printf("Количество значений в деке: %d\n", deck->size);
                         print_deck(deck);
                         break;
+                    }
                 }
                 printf("1. Добавление элемента в начало дека\n");
                 printf("2. Удаление элемента из начала дека\n");
