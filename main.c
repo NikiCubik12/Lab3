@@ -4,6 +4,7 @@
 #include <locale.h>
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #define N INT_MAX
 #define n INT_MIN
@@ -20,68 +21,6 @@ void print_file(Deck* deck)
     for (int i = 0; i < deck->size; i++)
     {
         fprintf(result, "%d ", get_elem_by_index(i, deck)->value);
-    }
-}
-
-void input_deck(Deck *deck)
-{
-    int value;
-    char str[200];
-    printf("Введите числа через пробел: \n");
-    int c; 
-    while ((c = getchar()) != '\n' && c != EOF);
-    if (fgets(str, sizeof(str), stdin) != NULL)
-    {
-        char *end_ptr;
-        char *pointer = str;
-        int count_nums = 0;
-        while (*pointer)
-        {
-            while (*pointer == ' ')
-            {
-                pointer++;
-            }
-            if (*pointer == '\0' || *pointer == '\n')
-            {
-                break;
-            }
-            errno = 0;
-            long num = strtol(pointer, &end_ptr, 10);
-            if (pointer == end_ptr)
-            {
-                printf("Есть некорректные значения.");
-                return;
-            }
-            if (errno == ERANGE)
-            {
-                printf("Ошибка. Число слишком большое.");
-                return;
-            }
-            int number = (int) num;
-            add_to_end(number, deck);
-            pointer = end_ptr;
-            count_nums++;
-        }
-        if (count_nums == 0)
-        {
-            printf("Нет введённых чисел в строке");
-            return;
-        }
-        else 
-        {
-            printf("Добавлено чисел в дек: %d\n", count_nums);
-        }
-    }
-}
-
-void generating_of_elements(Deck *deck, int count_add)
-{
-    setlocale(LC_ALL, "Russian");
-    srand(time(NULL));
-    for (int i = 0; i < count_add; i++)         
-    {
-        int x = rand() %100000 + 1; 
-        add_to_end(x, deck);
     }
 }
 
@@ -110,6 +49,48 @@ int input(int min, int max, char* message)
     }
 }
 
+void input_deck(Deck *deck)
+{
+    char str[200];
+    printf("Введите числа через Энтер (в случае остановки напишите 'Стоп'): \n");
+    int c; 
+    while ((c = getchar()) != '\n' && c != EOF);
+    while (1)
+    {
+        if (fgets(str, sizeof(str), stdin) == NULL)
+        {
+            break;
+        }
+        str[strcspn(str, "\n")] = '\0'; // Пометили, что строка заканчивается
+        if (strcmp(str, "Стоп") == 0)
+        {
+            break;
+        }
+        char* pointer;
+        int value = (int) strtol(str, &pointer, 10); 
+        if (*pointer != '\0' && *pointer != '\n') 
+        {
+            printf("%s", "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            continue;
+        }
+        if (n <= value && value <= N)
+        {
+            add_to_end(value, deck);
+        }
+    }
+}
+
+void generating_of_elements(Deck *deck, int count_add)
+{
+    setlocale(LC_ALL, "Russian");
+    srand(time(NULL));
+    for (int i = 0; i < count_add; i++)         
+    {
+        int x = rand() %100000 + 1; 
+        add_to_end(x, deck);
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "Rus");
@@ -119,7 +100,7 @@ int main()
     clock_t before, after;
     while (is_working == 1)
     {
-        printf("Выберете метод работы с программой 1 или 2:\n");
+        printf("Выберете метод работы с программой 1 или 2: 1 - чтение из файла, 2 - ввод с клавиатуры\n");
         action = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз:\n");
         switch (action)
         {
@@ -256,6 +237,8 @@ int main()
                         break;
                     case 2:
                         input_deck(deck);
+                        printf("Количество значений в деке: %d\n", deck->size);
+                        print_deck(deck);
                         break;
                 }
                 printf("1. Добавление элемента в начало дека\n");
