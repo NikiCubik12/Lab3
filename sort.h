@@ -1,9 +1,9 @@
 #ifndef SORT_H
 #define SORT_H
-#include "deck.h"
+#include "deque.h"
 
-void bubble_sort(Deck *deck);
-void tree_rebuild(int r, int q, Deck *deck);
-void piramide_sort(Deck *deck);
+void bubble_sort(Deque *deque);
+void tree_rebuild(int r, int q, Deque *deque);
+void piramide_sort(Deque *deque);
 
 #endif
