@@ -128,7 +128,7 @@ int main()
                 while (fscanf(List, "%199s", buffer) == 1) 
                 {
                     errno = 0;
-                    long num = strtol(buffer, NULL, 10);
+                    long num = strtol(buffer, NULL, 10); 
                     if (errno == ERANGE)
                     {
                         printf("Есть некорректные значения в файле.\n");
@@ -158,7 +158,6 @@ int main()
                     case 1:
                         printf("Введите число от -2147483648 до 2147483647:\n");
                         input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        // scanf("%d", &input_number);
                         add_to_head(input_number, deque);
                         print_deque(deque);
                         printf("\n");
@@ -265,7 +264,6 @@ int main()
                     case 1:
                         printf("Введите число от -2147483648 до 2147483647:\n");
                         input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        // scanf("%d", &input_number);
                         add_to_head(input_number, deque);
                         print_deque(deque);
                         printf("\n");
