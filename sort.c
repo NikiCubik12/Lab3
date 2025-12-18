@@ -6,9 +6,9 @@
 void bubble_sort(Deque *deck)
 {
     int temp;
-    for (int i=0; i < deck->size-1; i++)
+    for (int i = 0; i < deck->end_deque->index; i++)
     {
-        for (int j=i+1; j < deck->size; j++)
+        for (int j = i+1; j < deck->end_deque->index + 1; j++)
         {
             if (get_elem_by_index(i, deck)->value > get_elem_by_index(j, deck)->value)
             {
@@ -53,11 +53,11 @@ void tree_rebuild(int r, int q, Deque *deque)
 
 void piramide_sort(Deque *deque)
 {
-    for (int i = (deque->size/2 - 1); i >= 0; i--)
+    for (int i = ((deque->end_deque->index + 1)/2 - 1); i >= 0; i--)
     {
-        tree_rebuild(i, deque->size-1, deque);
+        tree_rebuild(i, deque->end_deque->index, deque);
     }
-    for (int i = (deque->size - 1); i > 0; i--)
+    for (int i = (deque->end_deque->index); i > 0; i--)
     {
         int x = get_elem_by_index(0, deque)->value;
         get_elem_by_index(0, deque)->value = get_elem_by_index(i, deque)->value;

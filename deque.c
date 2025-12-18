@@ -15,7 +15,6 @@ Deque *make()
     }
     pointer_deque->head_deque = NULL;
     pointer_deque->end_deque = NULL;
-    pointer_deque->size = 0;
     return pointer_deque;
 }
 
@@ -31,8 +30,14 @@ void add_to_end(int val, Deque *deque)
     new_elem->value = val;
     new_elem->next = NULL;
     new_elem->pref = deque->end_deque;
-    new_elem->index = deque->size;
-
+    if (deque->end_deque == NULL)
+    {
+        new_elem->index = 0;
+    }
+    else 
+    {
+        new_elem->index = deque->end_deque->index + 1;
+    }
     if (deque->head_deque == NULL)
     {
         deque->head_deque = new_elem;
@@ -43,7 +48,6 @@ void add_to_end(int val, Deque *deque)
         deque->end_deque->next = new_elem;
         deque->end_deque = new_elem;
     }
-    deque->size++;
 }
 
 void add_to_head(int val, Deque *deque)
@@ -57,7 +61,6 @@ void add_to_head(int val, Deque *deque)
     new_elem->value = val;
     new_elem->next = deque->head_deque;
     deque->head_deque = new_elem;
-    deque->size++;
     
     int count = 0;
     Element *temporarily = deque->head_deque;
@@ -73,7 +76,7 @@ void remove_from_end(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
     Element *temporarily = deque->end_deque;
-    if (deque->size == 1)
+    if (deque->end_deque != NULL && deque->end_deque->index == 0)
     {
         deque->head_deque = NULL;
         deque->end_deque = NULL;
@@ -84,14 +87,13 @@ void remove_from_end(Deque *deque)
         deque->end_deque->next = NULL;
     }
     free(temporarily);
-    deque->size--;
 }
 
 void remove_from_head(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
     Element *temporarily = deque->head_deque;
-    if (deque->size == 1)
+    if (deque->end_deque != NULL && deque->end_deque->index == 0)
     {
         deque->head_deque = NULL;
         deque->end_deque = NULL;
@@ -101,7 +103,7 @@ void remove_from_head(Deque *deque)
         deque->head_deque = deque->head_deque->next;
         deque->head_deque->pref = NULL;
         int count = 0;
-        Element *temp = deque->head_deque;
+        Element *temp = deque->head_deque; // обновляем индексы
         while (temp != NULL)
         {
             temp->index = count;
@@ -110,13 +112,12 @@ void remove_from_head(Deque *deque)
         }
     }
     free(temporarily);
-    deque->size--;
 }
 
 void add_by_index(int val, int idx, Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
-    if (idx == deque->size - 1) 
+    if (idx == deque->end_deque->index) 
     {
         add_to_end(val, deque);
         return;
@@ -141,7 +142,6 @@ void add_by_index(int val, int idx, Deque *deque)
         temporarily->index++;
         temporarily = temporarily->next;
     }
-    deque->size++;
 }
 
 void remove_by_index(int idx, Deque *deque)
@@ -164,8 +164,7 @@ void remove_by_index(int idx, Deque *deque)
     }
     temporarily->pref->next = temporarily->next;
     temporarily->next->pref = temporarily->pref;
-    deque->size--;
-    
+
     Element *temp = temporarily;
     temporarily = temporarily->next;
     while (temporarily != NULL)

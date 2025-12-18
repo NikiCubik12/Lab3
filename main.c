@@ -18,7 +18,7 @@ void print_file(Deque* deque)
         return;
     }
     
-    for (int i = 0; i < deque->size; i++)
+    for (int i = 0; i < deque->end_deque->index + 1; i++)
     {
         fprintf(result, "%d ", get_elem_by_index(i, deque)->value);
     }
@@ -57,7 +57,7 @@ int input(int min, int max, char* message)
 void input_deque(Deque *deque)
 {
     char str[200];
-    printf("Введите число через клавишу Энтер (в случае остановки напишите 'stop'): \n");
+    printf("Введите число через клавишу Энтер (в случае остановки напишите 'Stop'): \n");
     while (1)
     {
         if (fgets(str, sizeof(str), stdin) == NULL)
@@ -65,7 +65,7 @@ void input_deque(Deque *deque)
             break;
         }
         str[strcspn(str, "\n")] = '\0'; 
-        if (strcmp(str, "Stop") == 0)
+        if (strcmp(str, "Stop") == 0) 
         {
             break;
         }
@@ -140,7 +140,7 @@ int main()
                 printf("Все корректные прочитанные значения из файла:\n");
                 print_deque(deque);
                 printf("\n");
-                printf("Количество элементов в деке: %d", deque->size);
+                printf("Количество элементов в деке: %d", deque->end_deque->index + 1);
                 printf("\n");
                 fclose(List);
                 printf("Дек загружен из файла. Выберите действие от 1 до 6:\n");
@@ -182,14 +182,14 @@ int main()
                     case 5:
                         printf("Введите число и индекс через клавишу Энтер:\n"); 
                         input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        input_index = input(0, deque->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                        input_index = input(0, deque->end_deque->index, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
                         add_by_index(input_number, input_index, deque);
                         print_deque(deque);
                         printf("\n");
                         break;
                     case 6:
                         printf("Введите индекс:\n");
-                        input_index = input(0, deque->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                        input_index = input(0, deque->end_deque->index, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
                         remove_by_index(input_index, deque);
                         print_deque(deque);
                         printf("\n");
@@ -208,7 +208,7 @@ int main()
                             printf("\n");
                             time = ((double) (after - before))/CLOCKS_PER_SEC;
                             printf("Время работы сортировки пузырьком: %f\n", time);
-                            printf ("Количество элементов: %d \n", deque->size);
+                            printf ("Количество элементов: %d \n", deque->end_deque->index + 1);
                             print_file (deque);
                             break;
                     case 2:
@@ -220,7 +220,7 @@ int main()
                             print_deque(deque);
                             printf("\n");
                             printf("Время работы пирамидальной сортировки: %f\n", time);
-                            printf ("Количество элементов: %d \n", deque->size);
+                            printf ("Количество элементов: %d \n", deque->end_deque->index + 1);
                             print_file (deque);
                             break;
                 }
@@ -246,7 +246,7 @@ int main()
                     case 2:
                     {
                         input_deque(deque);
-                        printf("Количество чисел в деке: %d\n", deque->size);
+                        printf("Количество чисел в деке: %d\n", deque->end_deque->index + 1);
                         print_deque(deque);
                         break;
                     }
@@ -288,14 +288,14 @@ int main()
                     case 5:
                         printf("Введите число и индекс через клавишу Энтер:\n"); 
                         input_number = input(n, N, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        input_index = input(0, deque->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                        input_index = input(0, deque->end_deque->index, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
                         add_by_index(input_number, input_index, deque);
                         print_deque(deque);
                         printf("\n");
                         break;
                     case 6:
                         printf("Введите индекс:\n");
-                        input_index = input(0, deque->size-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                        input_index = input(0, deque->end_deque->index, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
                         remove_by_index(input_index, deque);
                         print_deque(deque);
                         printf("\n");
@@ -314,7 +314,7 @@ int main()
                             printf("\n");
                             time = ((double) (after - before))/CLOCKS_PER_SEC;
                             printf("Время работы сортировки пузырьком: %f\n", time);
-                            printf ("Количество элементов: %d \n", deque->size);
+                            printf ("Количество элементов: %d \n", deque->end_deque->index + 1);
                             print_file (deque);
                             break;
                     case 2:
@@ -326,7 +326,7 @@ int main()
                             print_deque(deque);
                             printf("\n");
                             printf("Время работы пирамидальной сортировки: %f\n", time);
-                            printf ("Количество элементов: %d \n", deque->size);
+                            printf ("Количество элементов: %d \n", deque->end_deque->index + 1);
                             print_file (deque);
                             break;
                 }

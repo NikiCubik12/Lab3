@@ -1,13 +1,19 @@
-all: collect2
+CC = gcc
+CFLAGS =-c -Wall -Wextra
 
-main.o: main.c
-	gcc -c main.c
+laba: main.o deque.o sort.o
+  $(CC) main.o deque.o sort.o -o laba
 
-deque.o: deque.c
-	gcc -c deque.c
+main.o: main.c deque.h sort.h
+  $(CC) $(CFLAGS) -c main.c
 
-sort.o: sort.c
-	gcc -c sort.c
+deque.o: deque.c deque.h
+  $(CC) $(CFLAGS) -c deque.c
 
-collect2: main.o deque.o sort.o
-	gcc -o collect2 main.o deque.o sort.o
+sort.o: sort.c sort.h deque.h
+  $(CC) $(CFLAGS) -c sort.c
+
+clean:
+  rm -f *.o laba
+
+.PHONY: clean

@@ -1,5 +1,4 @@
-#ifndef DEQUE_H
-#define DEQUE_H
+
 
 typedef struct Element
 {
@@ -13,7 +12,6 @@ typedef struct Deque
 {
     Element *head_deque;
     Element *end_deque;
-    int size;
 } Deque;
 
 Deque *make();
@@ -25,5 +23,3 @@ void add_by_index(int val, int idx, Deque *deque);
 void remove_by_index(int idx, Deque *deque);
 Element *get_elem_by_index(int idx, Deque *deque);
 void print_deque(Deque *deque);
-
-#endif
