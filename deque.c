@@ -3,7 +3,7 @@
 #include "deque.h"
 #include <locale.h>
 
-Deque *make()
+Deque *make_deque()
 {
     setlocale(LC_ALL, "Rus");
     Deque *pointer_deque = (Deque*) malloc(sizeof(Deque));
@@ -30,14 +30,14 @@ void add_to_end(int val, Deque *deque)
     new_elem->value = val;
     new_elem->next = NULL;
     new_elem->pref = deque->end_deque;
-    if (deque->end_deque == NULL)
-    {
-        new_elem->index = 0;
-    }
-    else 
-    {
-        new_elem->index = deque->end_deque->index + 1;
-    }
+    // if (deque->end_deque == NULL)
+    // {
+    //     new_elem->index = 0;
+    // }
+    // else 
+    // {
+    //     new_elem->index = deque->end_deque->index + 1;
+    // }
     if (deque->head_deque == NULL)
     {
         deque->head_deque = new_elem;
@@ -62,21 +62,21 @@ void add_to_head(int val, Deque *deque)
     new_elem->next = deque->head_deque;
     deque->head_deque = new_elem;
     
-    int count = 0;
-    Element *temporarily = deque->head_deque;
-    while (temporarily != NULL)
-    {
-        temporarily->index = count;
-        count++;
-        temporarily = temporarily->next;
-    }
+    // int count = 0;
+    // Element *temporarily = deque->head_deque;
+    // while (temporarily != NULL)
+    // {
+    //     temporarily->index = count;
+    //     count++;
+    //     temporarily = temporarily->next;
+    // }
 }
 
 void remove_from_end(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
     Element *temporarily = deque->end_deque;
-    if (deque->end_deque != NULL && deque->end_deque->index == 0)
+    if (deque->end_deque != NULL && deque->head_deque == deque->end_deque)
     {
         deque->head_deque = NULL;
         deque->end_deque = NULL;
@@ -93,7 +93,7 @@ void remove_from_head(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
     Element *temporarily = deque->head_deque;
-    if (deque->end_deque != NULL && deque->end_deque->index == 0)
+    if (deque->end_deque != NULL && deque->head_deque == deque->end_deque)
     {
         deque->head_deque = NULL;
         deque->end_deque = NULL;
@@ -102,14 +102,14 @@ void remove_from_head(Deque *deque)
     {
         deque->head_deque = deque->head_deque->next;
         deque->head_deque->pref = NULL;
-        int count = 0;
-        Element *temp = deque->head_deque; // обновляем индексы
-        while (temp != NULL)
-        {
-            temp->index = count;
-            count++;
-            temp = temp->next;
-        }
+        // int count = 0;
+        // Element *temp = deque->head_deque; // обновляем индексы
+        // while (temp != NULL)
+        // {
+        //     temp->index = count;
+        //     count++;
+        //     temp = temp->next;
+        // }
     }
     free(temporarily);
 }
@@ -117,18 +117,25 @@ void remove_from_head(Deque *deque)
 void add_by_index(int val, int idx, Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
-    if (idx == deque->end_deque->index) 
-    {
-        add_to_end(val, deque);
-        return;
-    }
+    // if (idx == deque->end_deque->index) 
+    // {
+    //     add_to_end(val, deque);
+    //     return;
+    // }
     Element *temporarily = deque->head_deque;
-    while (temporarily->index != idx)
+    int i = 0;
+    while (temporarily != NULL && i != idx)
     {
+        i++;
         temporarily = temporarily->next;
     }
+    if (temporarily == NULL)
+    {
+        printf("Не найден индекс в деке, элемент не добавлен");
+        return;
+    }
     Element *new_elem = (Element*) malloc(sizeof(Element));
-    new_elem->index = idx;
+    // new_elem->index = idx;
     new_elem->value = val;
 
     new_elem->next = temporarily->next; 
@@ -136,12 +143,12 @@ void add_by_index(int val, int idx, Deque *deque)
     temporarily->next->next->pref = new_elem; 
     new_elem->pref = temporarily; 
 
-    temporarily = temporarily->next;
-    while (temporarily != NULL)
-    {
-        temporarily->index++;
-        temporarily = temporarily->next;
-    }
+    // temporarily = temporarily->next;
+    // while (temporarily != NULL)
+    // {
+    //     temporarily->index++;
+    //     temporarily = temporarily->next;
+    // }
 }
 
 void remove_by_index(int idx, Deque *deque)
@@ -152,38 +159,66 @@ void remove_by_index(int idx, Deque *deque)
         remove_from_head(deque);
         return;
     }
-    if (idx == deque->end_deque->index)
-    {
-        remove_from_end(deque);
-        return;
-    }
+    // if (idx == deque->end_deque->index)
+    // {
+    //     remove_from_end(deque);
+    //     return;
+    // }
     Element *temporarily = deque->head_deque;
-    while (temporarily->index != idx)
+    int i = 0;
+    while (temporarily != NULL && i != idx)
     {
+        i++;
         temporarily = temporarily->next;
+    }
+    if (temporarily == NULL)
+    {
+        printf("Не найден индекс в деке, элемент не удалён");
+        return;
     }
     temporarily->pref->next = temporarily->next;
     temporarily->next->pref = temporarily->pref;
 
-    Element *temp = temporarily;
-    temporarily = temporarily->next;
-    while (temporarily != NULL)
-    {
-        temporarily->index--;
-        temporarily = temporarily->next;
-    }
-    free(temp);
+    // Element *temp = temporarily;
+    // temporarily = temporarily->next;
+    // while (temporarily != NULL)
+    // {
+    //     temporarily->index--;
+    //     temporarily = temporarily->next;
+    // }
+    free(temporarily);
 }
 
 Element *get_elem_by_index(int idx, Deque *deque)
 {
     Element *temporarily = deque->head_deque;
 
-    while (temporarily != NULL && temporarily->index != idx)
+    int i = 0;
+    while (temporarily != NULL && i != idx)
     {
+        i++;
         temporarily = temporarily->next;
     }
-    return temporarily;
+    if (i == idx)
+    {
+        return temporarily;
+    }
+    else 
+    {
+        return NULL;
+    }
+}
+
+int size_deque(Deque *deque)
+{
+    int count = 0;
+    Element *temporarily = deque->head_deque;
+    while (temporarily != NULL)
+    {
+        count++;
+        temporarily = temporarily->next;
+    }
+    return count;
 }
 
 void print_deque(Deque *deque)
@@ -194,10 +229,12 @@ void print_deque(Deque *deque)
     {
         printf("Ошибка вывода.\n");
     }
+    int i = 0;
     while (temporarily != NULL)
     {
-        printf("%d:", temporarily->index);
+        printf("%d:", i);
         printf("%d ", temporarily->value);
         temporarily = temporarily->next;
+        i++;
     }
 }

@@ -3,18 +3,18 @@
 #include "sort.h"
 #include <locale.h>
 
-void bubble_sort(Deque *deck)
+void bubble_sort(Deque *deque)
 {
     int temp;
-    for (int i = 0; i < deck->end_deque->index; i++)
+    for (int i = 0; i < size_deque(deque)-1; i++)
     {
-        for (int j = i+1; j < deck->end_deque->index + 1; j++)
+        for (int j = i+1; j < size_deque(deque); j++)
         {
-            if (get_elem_by_index(i, deck)->value > get_elem_by_index(j, deck)->value)
+            if (get_elem_by_index(i, deque)->value > get_elem_by_index(j, deque)->value)
             {
-                temp = get_elem_by_index(i, deck)->value;
-                get_elem_by_index(i, deck)->value = get_elem_by_index(j, deck)->value;
-                get_elem_by_index(j, deck)->value = temp;
+                temp = get_elem_by_index(i, deque)->value;
+                get_elem_by_index(i, deque)->value = get_elem_by_index(j, deque)->value;
+                get_elem_by_index(j, deque)->value = temp;
             }
         }
     }
@@ -53,11 +53,11 @@ void tree_rebuild(int r, int q, Deque *deque)
 
 void piramide_sort(Deque *deque)
 {
-    for (int i = ((deque->end_deque->index + 1)/2 - 1); i >= 0; i--)
+    for (int i = (size_deque(deque)/2 - 1); i >= 0; i--)
     {
-        tree_rebuild(i, deque->end_deque->index, deque);
+        tree_rebuild(i, size_deque(deque)-1, deque);
     }
-    for (int i = (deque->end_deque->index); i > 0; i--)
+    for (int i = (size_deque(deque)-1); i > 0; i--)
     {
         int x = get_elem_by_index(0, deque)->value;
         get_elem_by_index(0, deque)->value = get_elem_by_index(i, deque)->value;
