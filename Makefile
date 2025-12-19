@@ -1,5 +1,14 @@
-collect2.exe: main.c deque.c sort.c
-	gcc -o $@ $^
+.PHONY: all clean 
+
+all: collect2
 
 clean:
-	rm -f collect2.exe
+	rm -rf collect2
+main.o: main.c 
+	gcc -c main.o main.c 
+deque.o: deque.c 
+	gcc -c deque.o deque.c 
+sort.o: sort.c 
+	gcc -c sort.o sort.c 
+collect2: main.o deque.o sort.o
+	gcc -o collect2 main.o deque.o sort.o

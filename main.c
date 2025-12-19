@@ -97,7 +97,7 @@ void generating_of_elements(Deque *deque, int count_add)
     }
 }
 
-int main(int argv, char *args[])
+int main(int argv, char args[])
 {
     //main.exe --file "название.txt"
     
@@ -107,10 +107,6 @@ int main(int argv, char *args[])
     double time;
     Deque *deque = make_deque();
     clock_t before, after;
-    // if (argv == 3, strmp(argv, "название.txt") == 0) 
-    // {
-    //     print_file(deque);
-    // }
     while (is_working == 1)
     {
         printf("¬ведите метод работы с программой 1 или 2: 1 - чтение из файла, 2 - ручной ввод\n");
