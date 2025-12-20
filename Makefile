@@ -1,14 +1,33 @@
-.PHONY: all clean 
+TARGET = collect2.exe
+CC = gcc
+CFLAGS = -Wall 
+OBJECTS = main.o sort.o deque.o 
 
-all: collect2
+.PHONY: all run start clean
+
+all: $(TARGET)
+	@echo "Компиляция завершена!"
+
+run: $(TARGET)
+	@echo "Запуск программы..."
+	./$(TARGET)
+
+start:
+	@echo "Запуск программы..."
+	./$(TARGET)
 
 clean:
-	rm -rf collect2
-main.o: main.c 
-	gcc -c main.o main.c 
-deque.o: deque.c 
-	gcc -c deque.o deque.c 
-sort.o: sort.c 
-	gcc -c sort.o sort.c 
-collect2: main.o deque.o sort.o
-	gcc -o collect2 main.o deque.o sort.o
+	rm -f $(TARGET) $(OBJECTS)
+	@echo "Очищение файлов..."
+
+$(TARGET): $(OBJECTS)
+	$(CC) -o $(TARGET) $(OBJECTS)
+
+main.o: main.c deque.h sort.h
+	$(CC) $(CFLAGS) -c main.c -o main.o
+
+deque.o: deque.c deque.h 
+	$(CC) $(CFLAGS) -c deque.c -o deque.o
+
+sort.o: sort.c sort.h
+	$(CC) $(CFLAGS) -c sort.c -o sort.o 

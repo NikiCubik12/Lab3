@@ -5,6 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include <errno.h>
 
 void print_file(Deque* deque)
@@ -97,242 +98,244 @@ void generating_of_elements(Deque *deque, int count_add)
     }
 }
 
-int main(int argv, char args[])
+int main(int argc, char *argv[])
 {
     //main.exe --file "название.txt"
     
     setlocale(LC_ALL, "Rus");
-    int option, action, choice, is_working = 1;
+    int option, choice, is_working = 1;
     int input_number, input_index;
     double time;
     Deque *deque = make_deque();
     clock_t before, after;
-    while (is_working == 1)
+
+    if (argc == 3 && strcmp(argv[1], "--file") == 0)
     {
-        printf("Введите метод работы с программой 1 или 2: 1 - чтение из файла, 2 - ручной ввод\n");
-        action = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-        switch (action)
+        FILE *file = fopen(argv[2], "r");
+        if (file == NULL)
         {
-            case 1:
-                FILE *List;
-                int number;
-                char buffer[200];
-                List = fopen("Lists.txt", "r");
-                if (List == NULL) 
-                {
-                    printf("Ошибка. Не удалось считать файл.\n");
-                    return 1; 
-                }
-                printf("Считываем числа из файла:\n");
-
-                while (fscanf(List, "%199s", buffer) == 1) 
-                {
-                    errno = 0;
-                    long num = strtol(buffer, NULL, 10); 
-                    if (errno == ERANGE)
-                    {
-                        printf("Есть некорректные значения в файле.\n");
-                        break;
-                    }
-                    number = (int) num;
-                    add_to_end(number, deque);
-                }
-                printf("Все корректные прочитанные значения из файла:\n");
-                print_deque(deque);
-                printf("\n");
-                printf("Количество элементов в деке: %d", size_deque(deque));
-                printf("\n");
-                fclose(List);
-                printf("Дек загружен из файла. Выберите действие от 1 до 6:\n");
-                printf("1. Добавление элемента в начало дека\n");
-                printf("2. Удаление элемента из начала дека\n");
-                printf("3. Добавление элемента в конец дека\n");
-                printf("4. Удаление элемента из конца дека\n");
-                printf("5. Добавление элемента по индексу\n");
-                printf("6. Удаление элемента по индексу\n");
-                option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                
-                
-                switch (option)
-                {
-                    case 1:
-                        printf("Введите число от -2147483648 до 2147483647:\n");
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_to_head(input_number, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 2:
-                        remove_from_head(deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 3:
-                        printf("Введите число от -2147483648 до 2147483647:\n");
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_to_end(input_number, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 4:
-                        remove_from_end(deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 5:
-                        printf("Введите число и индекс через клавишу Энтер:\n"); 
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_by_index(input_number, input_index, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 6:
-                        printf("Введите индекс:\n");
-                        input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        remove_by_index(input_index, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                }
-                printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
-                option = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                switch (option)
-                {
-                    case 1:
-                            before = clock();
-                            bubble_sort(deque);
-                            after = clock();
-                            printf("Отсортированный дек:\n");
-                            print_deque(deque);
-                            printf("\n");
-                            time = ((double) (after - before))/CLOCKS_PER_SEC;
-                            printf("Время работы сортировки пузырьком: %f\n", time);
-                            printf ("Количество элементов: %d \n", size_deque(deque));
-                            print_file (deque);
-                            break;
-                    case 2:
-                            before = clock();
-                            piramide_sort(deque);
-                            after = clock();
-                            printf("Отсортированный дек:\n");
-                            time = ((double) (after - before))/CLOCKS_PER_SEC;
-                            print_deque(deque);
-                            printf("\n");
-                            printf("Время работы пирамидальной сортировки: %f\n", time);
-                            printf ("Количество элементов: %d \n", size_deque(deque));
-                            print_file (deque);
-                            break;
-                }
-
-                printf("Хотите продолжить программу? 1 - да, 2 - нет\n");
-                is_working = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                break; 
-        
-            
-            case 2:
-                printf("Хотите сгенерировать или ввести числа? 1 - сгенерировать, 2 - ручной ввод\n");
-                choice = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                switch (choice)
-                {
-                    case 1:
-                    {
-                        int count_add;
-                        printf("Введите количество сгенерированных элементов:\n");
-                        count_add = input(1, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        generating_of_elements(deque, count_add);
-                        break;
-                    }
-                    case 2:
-                    {
-                        input_deque(deque);
-                        printf("Количество чисел в деке: %d\n", size_deque(deque));
-                        print_deque(deque);
-                        break;
-                    }
-                }
-                printf("1. Добавление элемента в начало дека\n");
-                printf("2. Удаление элемента из начала дека\n");
-                printf("3. Добавление элемента в конец дека\n");
-                printf("4. Удаление элемента из конца дека\n");
-                printf("5. Добавление элемента по индексу\n");
-                printf("6. Удаление элемента по индексу\n");
-                option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                
-                switch (option)
-                {
-                    case 1:
-                        printf("Введите число от -2147483648 до 2147483647:\n");
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_to_head(input_number, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 2:
-                        remove_from_head(deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 3:
-                        printf("Введите число от -2147483648 до 2147483647:\n");
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_to_end(input_number, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 4:
-                        remove_from_end(deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 5:
-                        printf("Введите число и индекс через клавишу Энтер:\n"); 
-                        input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        add_by_index(input_number, input_index, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                    case 6:
-                        printf("Введите индекс:\n");
-                        input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                        remove_by_index(input_index, deque);
-                        print_deque(deque);
-                        printf("\n");
-                        break;
-                }
-                printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
-                option = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
-                switch (option)
-                {
-                    case 1:
-                            before = clock();
-                            bubble_sort(deque);
-                            after = clock();
-                            printf("Отсортированный дек:\n");
-                            print_deque(deque);
-                            printf("\n");
-                            time = ((double) (after - before))/CLOCKS_PER_SEC;
-                            printf("Время работы сортировки пузырьком: %f\n", time);
-                            printf ("Количество элементов: %d \n", size_deque(deque));
-                            print_file (deque);
-                            break;
-                    case 2:
-                            before = clock();
-                            piramide_sort(deque);
-                            after = clock();
-                            printf("Отсортированный дек:\n");
-                            time = ((double) (after - before))/CLOCKS_PER_SEC;
-                            print_deque(deque);
-                            printf("\n");
-                            printf("Время работы пирамидальной сортировки: %f\n", time);
-                            printf ("Количество элементов: %d \n", size_deque(deque));
-                            print_file (deque);
-                            break;
-                }
-                printf("Хотите продолжить программу? 1 - да, 2 - нет\n");
-                is_working = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            printf("Ошибка открытия файла \n");
+            return 1;
+        }
+        int numb;
+        char buffer[200];
+        while (fscanf(file, "%199s", buffer) == 1)
+        {
+            errno = 0;
+            long num = strtol(buffer, NULL, 10); 
+            if (errno == ERANGE)
+            {
+                printf("Есть некорректные значения в файле.\n");
                 break;
+            }
+            numb = (int) num;
+            add_to_end(numb, deque);
+        }
+        fclose(file);
+
+        while (is_working == 1)
+        {
+            printf("Прочитанный дек из файла: \n");
+            print_deque(deque);
+            printf("\n");
+            printf("1. Добавление элемента в начало дека\n");
+            printf("2. Удаление элемента из начала дека\n");
+            printf("3. Добавление элемента в конец дека\n");
+            printf("4. Удаление элемента из конца дека\n");
+            printf("5. Добавление элемента по индексу\n");
+            printf("6. Удаление элемента по индексу\n");
+            option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            
+            switch (option)
+            {
+                case 1:
+                    printf("Введите число от -2147483648 до 2147483647:\n");
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_to_head(input_number, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 2:
+                    remove_from_head(deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 3:
+                    printf("Введите число от -2147483648 до 2147483647:\n");
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_to_end(input_number, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 4:
+                    remove_from_end(deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 5:
+                    printf("Введите число и индекс через клавишу Энтер:\n"); 
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_by_index(input_number, input_index, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 6:
+                    printf("Введите индекс:\n");
+                    input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    remove_by_index(input_index, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+            }
+            printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
+            option = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            switch (option)
+            {
+                case 1:
+                        before = clock();
+                        bubble_sort(deque);
+                        after = clock();
+                        printf("Отсортированный дек:\n");
+                        print_deque(deque);
+                        printf("\n");
+                        time = ((double) (after - before))/CLOCKS_PER_SEC;
+                        printf("Время работы сортировки пузырьком: %f\n", time);
+                        printf ("Количество элементов: %d \n", size_deque(deque));
+                        print_file (deque);
+                        break;
+                case 2:
+                        before = clock();
+                        piramide_sort(deque);
+                        after = clock();
+                        printf("Отсортированный дек:\n");
+                        time = ((double) (after - before))/CLOCKS_PER_SEC;
+                        print_deque(deque);
+                        printf("\n");
+                        printf("Время работы пирамидальной сортировки: %f\n", time);
+                        printf ("Количество элементов: %d \n", size_deque(deque));
+                        print_file (deque);
+                        break;
+            }
+            printf("Хотите продолжить программу? 1 - да, 2 - нет\n");
+            is_working = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            if (is_working == 2)
+            {
+                break;
+            }
+        }
+    }
+
+    if (argc != 3)
+    {
+        while (is_working == 1)
+        {
+            printf("Хотите сгенерировать или ввести числа? 1 - сгенерировать, 2 - ручной ввод\n");
+            choice = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            switch (choice)
+            {
+                case 1:
+                {
+                    int count_add;
+                    printf("Введите количество сгенерированных элементов:\n");
+                    count_add = input(1, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    generating_of_elements(deque, count_add);
+                    break;
+                }
+                case 2:
+                {
+                    input_deque(deque);
+                    printf("Количество чисел в деке: %d\n", size_deque(deque));
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                }
+            }
+            printf("1. Добавление элемента в начало дека\n");
+            printf("2. Удаление элемента из начала дека\n");
+            printf("3. Добавление элемента в конец дека\n");
+            printf("4. Удаление элемента из конца дека\n");
+            printf("5. Добавление элемента по индексу\n");
+            printf("6. Удаление элемента по индексу\n");
+            option = input(1, 6, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            
+            switch (option)
+            {
+                case 1:
+                    printf("Введите число от -2147483648 до 2147483647:\n");
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_to_head(input_number, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 2:
+                    remove_from_head(deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 3:
+                    printf("Введите число от -2147483648 до 2147483647:\n");
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_to_end(input_number, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 4:
+                    remove_from_end(deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 5:
+                    printf("Введите число и индекс через клавишу Энтер:\n"); 
+                    input_number = input(INT_MIN, INT_MAX, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    add_by_index(input_number, input_index, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+                case 6:
+                    printf("Введите индекс:\n");
+                    input_index = input(0, size_deque(deque)-1, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+                    remove_by_index(input_index, deque);
+                    print_deque(deque);
+                    printf("\n");
+                    break;
+            }
+            printf ("Выберите сортировку: 1 - пузырьком, 2 - пирамидальная \n");
+            option = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            switch (option)
+            {
+                case 1:
+                        before = clock();
+                        bubble_sort(deque);
+                        after = clock();
+                        printf("Отсортированный дек:\n");
+                        print_deque(deque);
+                        printf("\n");
+                        time = ((double) (after - before))/CLOCKS_PER_SEC;
+                        printf("Время работы сортировки пузырьком: %f\n", time);
+                        printf ("Количество элементов: %d \n", size_deque(deque));
+                        print_file (deque);
+                        break;
+                case 2:
+                        before = clock();
+                        piramide_sort(deque);
+                        after = clock();
+                        printf("Отсортированный дек:\n");
+                        time = ((double) (after - before))/CLOCKS_PER_SEC;
+                        print_deque(deque);
+                        printf("\n");
+                        printf("Время работы пирамидальной сортировки: %f\n", time);
+                        printf ("Количество элементов: %d \n", size_deque(deque));
+                        print_file (deque);
+                        break;
+            }
+            printf("Хотите продолжить программу? 1 - да, 2 - нет\n");
+            is_working = input(1, 2, "Ошибка. Введено некорректное значение. Введите ещё раз: \n");
+            if (is_working == 2)
+            {
+                break;
+            }
         }
     }
     printf("Выход из программы...\n");
