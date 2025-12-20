@@ -50,6 +50,7 @@ void add_to_head(int val, Deque *deque)
     if (new_elem == NULL)
     {
         printf("Ошибка. Не удалось выделить память.\n");
+        return;
     }
     new_elem->value = val;
     new_elem->next = deque->head_deque;
