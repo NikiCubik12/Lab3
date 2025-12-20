@@ -60,6 +60,11 @@ void add_to_head(int val, Deque *deque)
 void remove_from_end(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
+    if (deque->end_deque == NULL)
+    {
+        printf("Ошибка. Дек не содержит элементов \n");
+        return;
+    }
     Element *temporarily = deque->end_deque;
     if (deque->end_deque != NULL && deque->head_deque == deque->end_deque)
     {
@@ -77,6 +82,11 @@ void remove_from_end(Deque *deque)
 void remove_from_head(Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
+    if (deque->head_deque == NULL)
+    {
+        printf("Ошибка. Дек не содержит элементов \n");
+        return;
+    }
     Element *temporarily = deque->head_deque;
     if (deque->end_deque != NULL && deque->head_deque == deque->end_deque)
     {
@@ -134,6 +144,12 @@ void add_by_index(int val, int idx, Deque *deque)
 void remove_by_index(int idx, Deque *deque)
 {
     setlocale(LC_ALL, "Rus");
+    if (deque->head_deque == NULL)
+    {
+        printf("Ошибка. Дек не содержит элементов \n");
+        return;
+    }
+
     if (idx == 0)
     {
         remove_from_head(deque);
