@@ -8,7 +8,7 @@ void bubble_sort(Deque *deque)
     int temp;
     for (int i = 0; i < size_deque(deque)-1; i++)
     {
-        for (int j = i+1; j < size_deque(deque); j++)
+        for (int j = i + 1; j < size_deque(deque); j++)
         {
             if (get_elem_by_index(i, deque)->value > get_elem_by_index(j, deque)->value)
             {
