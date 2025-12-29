@@ -100,8 +100,6 @@ void generating_of_elements(Deque *deque, int count_add)
 
 int main(int argc, char *argv[])
 {
-    //main.exe --file "название.txt"
-    
     setlocale(LC_ALL, "Rus");
     int option, choice, is_working = 1;
     int input_number, input_index;
@@ -247,6 +245,7 @@ int main(int argc, char *argv[])
                     input_deque(deque);
                     printf("Количество чисел в деке: %d\n", size_deque(deque));
                     print_deque(deque);
+                    print_file(deque);
                     printf("\n");
                     break;
                 }

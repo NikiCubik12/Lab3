@@ -210,6 +210,8 @@ void print_deque(Deque *deque)
     int i = 0;
     while (temporarily != NULL)
     {
+
+        
         printf("%d:", i);
         printf("%d ", temporarily->value);
         temporarily = temporarily->next;
